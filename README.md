@@ -18,3 +18,9 @@ By analyzing the content of 6,523 pronouncements by Brazilian decision-makers, t
 - SPSS
 
 ### Visual Gallery (Sample)
+
+Discourses per year            |   Latin America and South America per year 
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/34004529/112518889-99271780-8d78-11eb-9a5a-8d20cbce1c40.jpg)  |  ![](https://user-images.githubusercontent.com/34004529/112518937-a6dc9d00-8d78-11eb-8f4f-d3238fca9145.jpg)
+
+
