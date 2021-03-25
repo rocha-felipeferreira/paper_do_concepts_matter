@@ -1,5 +1,5 @@
 ## Do Concepts Matter? Latin America and South America in the Discourse of Brazilian Foreign Policymakers
-**By Felipe Rocha, Rodrigo Barros de Albuquerque, Marcelo de Almeida Medeiros
+**By Felipe Rocha, Rodrigo Barros de Albuquerque, Marcelo de Almeida Medeiros**
 
 📚 [Click to read the paper](https://doi.org/10.1590/1981-3821201800030006)
 📂 [Click to access Dataverse files](https://doi.org/10.7910/DVN/LYNZVO)
