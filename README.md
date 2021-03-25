@@ -23,4 +23,8 @@ Discourses per year            |   Latin America and South America per year
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/34004529/112518889-99271780-8d78-11eb-9a5a-8d20cbce1c40.jpg)  |  ![](https://user-images.githubusercontent.com/34004529/112518937-a6dc9d00-8d78-11eb-8f4f-d3238fca9145.jpg)
 
+Annual Dominance             |    Association between concepts and events  
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/34004529/112519103-ca9fe300-8d78-11eb-906f-ceec7dea26cf.jpg)  |  ![](https://user-images.githubusercontent.com/34004529/112519154-dbe8ef80-8d78-11eb-8a46-9c04d44f967b.jpg)
+
 
