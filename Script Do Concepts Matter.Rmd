@@ -1,0 +1,115 @@
+---
+title: "Paper: Do Concepts Matter? [Script]"
+author: "Felipe Rocha, Rodrigo Albuquerque, Marcelo de Almeida Medeiros"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Info
+
+This document aims to show all commands used to generate the results and figures exhibited at the paper entitled: "Do Concepts Matter? Latin America and South America in the Discourse of Brazilian Foreign Policymakers"
+
+
+## Packages 
+
+```{r packages}
+
+require(tidyverse)
+library(extrafont)
+font_import()
+loadfonts(device = "win")
+```
+
+https://stackoverflow.com/questions/34522732/changing-fonts-in-ggplot2
+
+
+
+
+## Database
+
+As explained at the methodological section of the paper, the database [or Corpus] was provided by Itamaraty, and it is available on its [official website](http://www.itamaraty.gov.br/pt-BR/resenha-de-politica-exterior-do-brasil). However, we had to convert and change some features on some documents, as explained in the paper. This is exactly the reason why we created a folder called "corpus.rar" in which all data are also available. The number of speeches is an approximation based on the manual counting of the original summary as presented in the first pages of each document. The number of frequencies to Latin America and to South America were made through queries based on the expressions showed at the methodological appendix. For more information, please consult the codebook and other files available on this replication folder. Having said that, here follows the database:
+
+```{r database}
+
+database <- read.csv("dataframe_paper_do_concepts_matter.csv")
+database
+```
+
+
+## Graph 01. Frequency of discourses per year
+
+
+```{r graph1}
+
+ggplot(database, aes(x=year, y=resenha.pe)) + geom_line() + geom_point(shape=21, fill="white", size=4) + scale_x_continuous(breaks = database$year) + theme(axis.title.x = element_blank(), axis.title.y = element_blank(), axis.text.x = element_text(colour = "black", size = rel(1.6)), axis.text.y = element_text(colour = "black", size=rel(1.6)), text=element_text(size = 11, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray"))
+
+```
+
+
+## Graph 02. Frequency of use of the terms Latin America and South America per year
+
+```{r graph2}
+
+g2 <- database %>% select(year, perc.latin.america, perc.south.america) %>% gather(key = conceitos, value = valores, -year)
+
+ggplot(g2, aes(x=year, y=valores, fill=conceitos)) + geom_line(position = position_dodge(0.4)) + geom_point(shape=21, size=4, position = position_dodge(0.4)) +scale_fill_manual(values = c("black", "white"), label=c("Latin America", "South America")) + guides(fill=guide_legend(title = NULL)) + theme(axis.title.x = element_blank(), axis.text.x = element_text(colour = "black", size = rel(1.5)), axis.text.y = element_text(colour = "black", size = rel(1.5)), legend.text = element_text(size=11, family = "Cambria"), axis.title.y = element_text(size = rel(1.4)), text=element_text(size = 11, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray")) + scale_x_continuous(breaks = g2$year) + ylab("%")
+
+```
+
+
+## Graph 03. Annual Dominance
+
+```{r g3}
+
+ggplot(database, aes(x=year, y=perc.latin.minus.south)) + geom_line() + geom_point(shape=21, size=4, fill="white") + scale_x_continuous(breaks = database$year) + geom_hline(yintercept = 0) + theme(axis.title.x = element_blank(), axis.text.x = element_text(colour = "black", size = rel(1.4)), axis.text.y = element_text(colour = "black", size = rel(1.4)), axis.title.y = element_text(size=rel(1.4)), text=element_text(size = 11, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray")) + ylab("%")
+
+
+```
+
+## Graph 04. Latin America and South America by presidential terms (mean)
+
+```{r g4}
+
+g4 <- database %>% select(president, perc.latin.america, perc.south.america) 
+
+g4$president <- factor(g4$president, levels = c(1,2,3,4,5), labels = c("FHC1", "FHC2", "LULA1", "LULA2", "DILMA"))
+
+g4 <- gather(g4, key = "conceitos", value = "valores", -president)
+
+ggplot(g4, aes(x=president, y=valores, fill=conceitos)) + geom_bar(position="dodge", stat="summary", fun.y="mean", colour="black") +scale_fill_manual(values = c("white", "grey22"), label=c("Latin America", "South America")) + theme(axis.title.x = element_blank(), axis.text.x = element_text(colour = "black", size=rel(1.2)), axis.title.y = element_text(size = rel(1.2), colour = "black"), axis.text.y = element_text(size = rel(1.2), colour = "black"), text=element_text(size = 11, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray")) + ylab("%") + guides(fill=guide_legend(title = NULL))
+
+
+```
+
+
+## Graph 05. Conceptual dominance by presidential terms (mean)
+
+
+```{r g5}
+
+g5 <- database %>% select(president, perc.latin.minus.south)
+g5$president <- factor(g5$president, levels = c(1,2,3,4,5), labels = c("FHC1", "FHC2", "LULA1", "LULA2", "DILMA"))
+
+
+ggplot(g5, aes(x=president, y=perc.latin.minus.south)) + geom_bar(position="dodge", stat="summary", fun.y="mean", fill="white", colour="black")  + theme(axis.title.x = element_blank(), axis.text.x = element_text(colour = "black", size=rel(1.2)), axis.title.y = element_text(size = rel(1.2), colour = "black"), axis.text.y = element_text(size = rel(1.2), colour = "black"), text=element_text(size = 11, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray")) + ylab("%") + guides(fill=guide_legend(title = NULL)) + geom_hline(yintercept = 0, colour="black", size=.9) 
+
+
+```
+
+
+## Graph 06. An indicative association between concepts and events
+
+
+```{r g6}
+
+ggplot(database, aes(x=year, y=perc.latin.minus.south)) + geom_line() + geom_point(shape=21, size=4, fill="white") + scale_x_continuous(breaks = database$year) + geom_hline(yintercept = 0) + theme(axis.title.x = element_blank(), axis.title.y = element_text(size = rel(1.4)), axis.text.x = element_text(colour = "black", size = rel(1.4)), axis.text.y = element_text(colour = "black", size = rel(1.4)), text=element_text(size = 12, family="Cambria"), panel.background = element_rect(fill = "white", colour = "white"), panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "lightgray"), panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "lightgray")) + annotate("text", label="I South American \n Summit", x=2000, y=-2.1, size= 4.5, family = "Cambria") + annotate("text", label= "II South American \n Summit", x=2003, y=0.2, size= 4.5, family = "Cambria") + annotate("text", label="Sub-secretary \n of South America", x=2003, y=-1.66, size= 4.5, family = "Cambria") + annotate("text", label="SACN", x=2004, y=-0.5, size= 4.5, family = "Cambria") + annotate("text", label="I SACN Summit", x=2005, y=-2.6, size= 4.5, family = "Cambria") + annotate("text", label="II SACN \n Summit", x=2007, y=-1.4, size= 4.5, family = "Cambria") + annotate("text", label="UNASUR\nCALC", x=2008, y=-0.8, size= 4.5, family = "Cambria") + annotate("text", label="CELAC", x=2010, y=0.2, size= 4.5, family = "Cambria") + ylab("%")
+
+
+```
+
+
+
+
